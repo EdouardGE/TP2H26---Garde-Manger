@@ -13,10 +13,17 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/**
+ * ViewModel pour la logique métier de l’application.
+ * Il fait le lien entre l’interface utilisateur et la bd.
+ */
 class AlimentViewModel(
     private val alimentDao: AlimentDao
 ) : ViewModel() {
 
+    /**
+     * StateFlow pour être observé facilement dans Compose.
+     */
     val aliments: StateFlow<List<Aliment>> = alimentDao
         .getAll()
         .stateIn(
@@ -36,6 +43,10 @@ class AlimentViewModel(
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading
 
+    /**
+     * Initialise les données de l’application.
+     * Vérifie si la base est vide, insère des données initiales et notifie linterface via un callback
+     */
     fun initialiser(onComplete: () -> Unit = {}) {
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
@@ -52,24 +63,36 @@ class AlimentViewModel(
         }
     }
 
+    /**
+     * Ajoute un nouvel aliment dans la bd.
+     */
     fun ajouter(aliment: Aliment) {
         viewModelScope.launch(Dispatchers.IO) {
             alimentDao.insert(aliment)
         }
     }
 
+    /**
+     * Met à jour un aliment existant.
+     */
     fun modifier(aliment: Aliment) {
         viewModelScope.launch(Dispatchers.IO) {
             alimentDao.update(aliment)
         }
     }
 
+    /**
+     * Supprime un aliment spécifique.
+     */
     fun supprimer(aliment: Aliment) {
         viewModelScope.launch(Dispatchers.IO) {
             alimentDao.delete(aliment)
         }
     }
 
+    /**
+     * Supprime tous les aliments de la bd.
+     */
     fun supprimerTout(onComplete: () -> Unit = {}) {
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
@@ -81,6 +104,10 @@ class AlimentViewModel(
         }
     }
 
+    /**
+     * Inverse l’état "à acheter d’un aliment.
+     * Ajouter ou retirer un aliment de la liste d’achats.
+     */
     fun toggleAchat(aliment: Aliment) {
         viewModelScope.launch(Dispatchers.IO) {
             val alimentMisAJour = aliment.copy(aAcheter = !aliment.aAcheter)
@@ -88,6 +115,9 @@ class AlimentViewModel(
         }
     }
 
+    /**
+     * Insère une liste d’aliments par défaut si la base est vide, comme a linitialisation.
+     */
     private suspend fun insererDonneesInitiales() {
         val alimentsInitiaux = listOf(
             Aliment(nom = "Lait", categorie = "Produits laitiers", quantite = 2, unite = "L"),
@@ -103,6 +133,10 @@ class AlimentViewModel(
     }
 }
 
+
+/**
+ * Class permettant de créer le ViewModel avec un paramètre (AlimentDao).
+ */
 class AlimentViewModelFactory(
     private val alimentDao: AlimentDao
 ) : ViewModelProvider.Factory {

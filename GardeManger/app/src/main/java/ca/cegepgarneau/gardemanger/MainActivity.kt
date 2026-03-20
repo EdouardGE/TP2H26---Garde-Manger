@@ -44,7 +44,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ca.cegepgarneau.gardemanger.data.AlimentDatabase
-import ca.cegepgarneau.gardemanger.model.Aliment
 import ca.cegepgarneau.gardemanger.screens.FormulaireAliment
 import ca.cegepgarneau.gardemanger.screens.GardeMangerScreen
 import ca.cegepgarneau.gardemanger.screens.ListeCoursesScreen
@@ -53,8 +52,16 @@ import ca.cegepgarneau.gardemanger.viewmodel.AlimentViewModel
 import ca.cegepgarneau.gardemanger.viewmodel.AlimentViewModelFactory
 import kotlinx.coroutines.launch
 
+/**
+ * Activité principale de l’application.
+ * Crée le ViewModel et charge l’interface Compose.
+ */
 class MainActivity : ComponentActivity() {
 
+
+    /**
+     * Création du ViewModel avec une factory (besoin du DAO en paramètre)
+     */
     private val viewModel: AlimentViewModel by viewModels {
         AlimentViewModelFactory(
             AlimentDatabase.getDatabase(applicationContext).alimentDao()
@@ -72,6 +79,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/**
+ * Composable principal de l’application.
+ * Il gère l’état global de l’interface, les onglets, le mode adminn et la communication avec le ViewModel
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GardeMangerApp(
@@ -97,10 +108,16 @@ fun GardeMangerApp(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = androidx.compose.runtime.rememberCoroutineScope()
 
+    /**
+     * Initialise les données au premier affichage de l’app.
+     */
     LaunchedEffect(Unit) {
         viewModel.initialiser()
     }
 
+    /**
+     * Lanceur de permission pour activer le mode admin.
+     */
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { permissionAccordee ->
@@ -127,6 +144,9 @@ fun GardeMangerApp(
         stringResource(R.string.liste_courses)
     )
 
+    /**
+     * Structure générale de l’écran
+     */
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
@@ -146,6 +166,9 @@ fun GardeMangerApp(
                         )
                     }
 
+                    /**
+                     * Menu principal contenant : Activation et désactivation du mode admin
+                     */
                     DropdownMenu(
                         expanded = menuExpanded,
                         onDismissRequest = { menuExpanded = false }
@@ -192,6 +215,9 @@ fun GardeMangerApp(
                 }
             )
         },
+        /**
+         * Bouton flottant visible seulement pour admin et sur l’onglet garde-manger.
+         */
         floatingActionButton = {
             if (isAdminMode && selectedTabIndex == 0) {
                 FloatingActionButton(
@@ -212,6 +238,9 @@ fun GardeMangerApp(
         androidx.compose.foundation.layout.Column(
             modifier = Modifier.padding(innerPadding)
         ) {
+            /**
+             * Barre d’onglets pour naviguer entre le garde-manger et la liste de courses.
+             */
             TabRow(selectedTabIndex = selectedTabIndex) {
                 titresOnglets.forEachIndexed { index, titre ->
                     Tab(
@@ -256,6 +285,10 @@ fun GardeMangerApp(
         }
     }
 
+    /**
+     * Affichage du formulaire d’ajout ou de modification.
+     * Si un identifiant est présent, cherche l’aliment correspondant.
+     */
     if (showFormulaire) {
         val alimentEnEdition = alimentEnEditionId?.let { id ->
             aliments.firstOrNull { it.id == id }
@@ -279,6 +312,9 @@ fun GardeMangerApp(
         )
     }
 
+    /**
+     * Dialogue affiché lorsque la permission a été refusée,
+     */
     if (showPermissionDialog) {
         AlertDialog(
             onDismissRequest = { showPermissionDialog = false },
@@ -308,6 +344,9 @@ fun GardeMangerApp(
         )
     }
 
+    /**
+     * Dialogue affiché lorsque l’utilisateur a refusé la permission.
+     */
     if (showSettingsDialog) {
         AlertDialog(
             onDismissRequest = { showSettingsDialog = false },
@@ -337,7 +376,10 @@ fun GardeMangerApp(
         )
     }
 }
-
+/**
+ * Ouvre la page des paramètres de l’application
+ * Utilisateur peut gérer les permissions.
+ */
 private fun ouvrirParametresApplication(context: Context) {
     val intent = Intent(
         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,

@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -31,6 +29,14 @@ import ca.cegepgarneau.gardemanger.R
 import ca.cegepgarneau.gardemanger.model.Aliment
 import ca.cegepgarneau.gardemanger.ui.iconePourCategorie
 
+/**
+ * Écran affichant la liste des articles a acheter.
+ * Permet également de retirer un aliment de la liste d’achats en cliquant dessus.
+ * @param aliments liste des aliments à acheter
+ * @param isLoading indique si les données sont en chargement
+ * @param onRetirerDeLaListe callback appelé pour retirer un aliment
+ * @param modifier modificateur Compose qui est optionnel
+ */
 @Composable
 fun ListeCoursesScreen(
     aliments: List<Aliment>,
@@ -49,9 +55,7 @@ fun ListeCoursesScreen(
     }
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 12.dp, vertical = 8.dp)
+        modifier = modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 8.dp)
     ) {
         Text(
             text = stringResource(R.string.nombre_articles, aliments.size),
@@ -71,6 +75,9 @@ fun ListeCoursesScreen(
                 )
             }
         } else {
+            /**
+             * Liste des aliments à acheter affichée (LazyColumn) = optimiser les performances.
+             */
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
@@ -88,6 +95,13 @@ fun ListeCoursesScreen(
     }
 }
 
+/**
+ * Carte représentant un aliment dans la liste d’achats.
+ * Un clic permet de retirer l’aliment de cette liste.
+ * @param aliment aliment affiché
+ * @param onClick action exécutée lors du clic
+ * @param modifier mmodificateur Compose qui est optionnel
+ */
 @Composable
 private fun AlimentCourseCard(
     aliment: Aliment,
@@ -95,18 +109,14 @@ private fun AlimentCourseCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
+        modifier = modifier.fillMaxWidth().clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(

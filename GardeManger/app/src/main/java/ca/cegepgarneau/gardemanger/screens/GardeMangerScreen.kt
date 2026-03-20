@@ -37,6 +37,18 @@ import ca.cegepgarneau.gardemanger.R
 import ca.cegepgarneau.gardemanger.model.Aliment
 import ca.cegepgarneau.gardemanger.ui.iconePourCategorie
 
+/**
+ * Écran principal du garde manger.
+ * Affiche soit un indicateur de chargement, soit un message vide ou soit la liste des aliments dispos.
+ *
+ * @param aliments liste des aliments à afficher
+ * @param isLoading indique si les données sont encore en chargement
+ * @param isAdminMode détermine si le mode administrateur est actif
+ * @param onToggleAchat callback appelé lorsqu’on clique sur un aliment
+ * @param onModifier callback appelé pour modifier un aliment
+ * @param onSupprimer callback appelé pour supprimer un aliment
+ * @param modifier modificateur Compose optionnel
+ */
 @Composable
 fun GardeMangerScreen(
     aliments: List<Aliment>,
@@ -59,9 +71,7 @@ fun GardeMangerScreen(
 
     if (aliments.isEmpty()) {
         Box(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(24.dp),
+            modifier = modifier.fillMaxSize().padding(24.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -72,10 +82,11 @@ fun GardeMangerScreen(
         return
     }
 
+    /**
+     * Affichage de la liste des aliments (LazyColumn) = optimiser laffichage d’une liste longue.
+     */
     LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+        modifier = modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(
@@ -93,6 +104,17 @@ fun GardeMangerScreen(
     }
 }
 
+/**
+ * Carte représentant un seul aliment de la liste.
+ * Ajouter ou retirer l’aliment de la liste d’achats.
+ * Un appui long, en mode admin, ouvre le menu.
+ * @param aliment aliment affiché dans la carte
+ * @param isAdminMode indique si le mode administrateur est actif
+ * @param onClick action déclenchée lors d’un clic simple
+ * @param onModifier action déclenchée lors du choix "Modifier"
+ * @param onSupprimer action déclenchée lors du choix "Supprimer"
+ * @param modifier modificateur Compose qui est optionnel
+ */
 @Composable
 private fun AlimentCard(
     aliment: Aliment,
@@ -115,9 +137,7 @@ private fun AlimentCard(
     }
 
     Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .combinedClickable(
+        modifier = modifier.fillMaxWidth().combinedClickable(
                 onClick = onClick,
                 onLongClick = {
                     if (isAdminMode) {
@@ -130,9 +150,7 @@ private fun AlimentCard(
     ) {
         Box {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
@@ -192,6 +210,10 @@ private fun AlimentCard(
                 }
             }
 
+            /**
+             * Menu contextuel affiché lors d’un appui long en mode admin.
+             * Permet de modifier ou supprimer l’aliment sélectionné.
+             */
             DropdownMenu(
                 expanded = menuExpanded,
                 onDismissRequest = { menuExpanded = false }

@@ -25,6 +25,13 @@ import androidx.compose.ui.unit.dp
 import ca.cegepgarneau.gardemanger.R
 import ca.cegepgarneau.gardemanger.model.Aliment
 
+/**
+ * Composable représentant le formulaire d’ajout et de modification d’un aliment.
+ * Affiché sous forme de boîte AlertDialog.
+ * @param aliment aliment existant à modifier (null si ajout)
+ * @param onDismiss callback appelé lors de la fermeture du formulaire
+ * @param onConfirm callback appelé lorsque les données sont valides
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormulaireAliment(
@@ -75,6 +82,9 @@ fun FormulaireAliment(
     var categorieExpanded by rememberSaveable { mutableStateOf(false) }
     var uniteExpanded by rememberSaveable { mutableStateOf(false) }
 
+    /**
+     * Boîte de dialogue contenant le formulaire.
+     */
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
@@ -102,16 +112,20 @@ fun FormulaireAliment(
                     singleLine = true
                 )
 
+                /**
+                 * Catégorie
+                 */
                 ExposedDropdownMenuBox(
                     expanded = categorieExpanded,
                     onExpandedChange = { categorieExpanded = !categorieExpanded }
                 ) {
+                    /**
+                     * Quantité (chiffres)
+                     */
                     OutlinedTextField(
                         value = categorie,
                         onValueChange = {},
-                        modifier = Modifier
-                            .menuAnchor()
-                            .fillMaxWidth(),
+                        modifier = Modifier.menuAnchor().fillMaxWidth(),
                         readOnly = true,
                         label = { Text(texteCategorie) },
                         trailingIcon = {
@@ -123,6 +137,9 @@ fun FormulaireAliment(
                         }
                     )
 
+                    /**
+                     * Unité de mesure
+                     */
                     ExposedDropdownMenu(
                         expanded = categorieExpanded,
                         onDismissRequest = { categorieExpanded = false }
@@ -163,9 +180,7 @@ fun FormulaireAliment(
                     OutlinedTextField(
                         value = unite,
                         onValueChange = {},
-                        modifier = Modifier
-                            .menuAnchor()
-                            .fillMaxWidth(),
+                        modifier = Modifier.menuAnchor().fillMaxWidth(),
                         readOnly = true,
                         label = { Text(texteUnite) },
                         trailingIcon = {
