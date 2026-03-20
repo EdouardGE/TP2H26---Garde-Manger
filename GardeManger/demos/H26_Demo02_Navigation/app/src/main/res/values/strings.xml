@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">H26_Demo02_Navigation</string>
+    <string name="title_activity_sous">SousActivity</string>
+    <string name="title_activity_second">SecondActivity</string>
+</resources>

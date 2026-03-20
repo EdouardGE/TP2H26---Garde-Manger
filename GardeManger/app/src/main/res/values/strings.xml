@@ -1,3 +1,54 @@
 <resources>
-    <string name="app_name">GardeManger</string>
+    <string name="aucun_aliment">Aucun aliment dans le garde-manger</string>
+    <string name="quantite_unite_format">%1$d %2$s</string>
+    <string name="a_acheter">À acheter</string>
+    <string name="menu_aliment">Menu de l’aliment</string>
+    <string name="modifier">Modifier</string>
+    <string name="supprimer">Supprimer</string>
+
+    <string name="nombre_articles">%1$d articles à acheter</string>
+    <string name="aucun_article_courses">Aucun article dans la liste de courses</string>
+
+    <string name="ajouter_aliment">Ajouter un aliment</string>
+    <string name="modifier_aliment">Modifier un aliment</string>
+    <string name="nom">Nom</string>
+    <string name="categorie">Catégorie</string>
+    <string name="quantite">Quantité</string>
+    <string name="unite">Unité</string>
+    <string name="ajouter">Ajouter</string>
+    <string name="enregistrer">Enregistrer</string>
+    <string name="annuler">Annuler</string>
+    <string name="erreur_nom">Le nom doit contenir au moins 2 caractères</string>
+    <string name="erreur_categorie">Veuillez sélectionner une catégorie</string>
+    <string name="erreur_quantite">La quantité doit être un entier supérieur à 0</string>
+    <string name="erreur_unite">Veuillez sélectionner une unité</string>
+
+    <string name="app_name">Garde-Manger</string>
+    <string name="garde_manger">Garde-Manger</string>
+    <string name="liste_courses">Liste de courses</string>
+    <string name="menu_principal">Menu principal</string>
+    <string name="activer_admin">Activer le mode admin</string>
+    <string name="desactiver_admin">Désactiver le mode admin</string>
+    <string name="vider_tout">Vider tout</string>
+    <string name="snackbar_tout_supprime">Toutes les données ont été supprimées</string>
+    <string name="permission_requise_titre">Permission requise</string>
+    <string name="permission_requise_message">La permission de notifications est nécessaire pour activer le mode administrateur et vous alerter lorsque des articles sont ajoutés à votre liste de courses.</string>
+    <string name="permission_parametres_message">La permission a été refusée de manière permanente. Ouvrez les paramètres de l’application pour l’autoriser.</string>
+    <string name="reessayer">Réessayer</string>
+    <string name="ouvrir_parametres">Ouvrir les paramètres</string>
+
+    <!-- Catégories -->
+    <string name="categorie_fruits">Fruits</string>
+    <string name="categorie_legumes">Légumes</string>
+    <string name="categorie_produits_laitiers">Produits laitiers</string>
+    <string name="categorie_viandes">Viandes</string>
+    <string name="categorie_cereales">Céréales</string>
+    <string name="categorie_autre">Autre</string>
+
+    <!-- Unités -->
+    <string name="unite_g">g</string>
+    <string name="unite_kg">kg</string>
+    <string name="unite_l">L</string>
+    <string name="unite_ml">mL</string>
+    <string name="unite_unites">unité(s)</string>
 </resources>
